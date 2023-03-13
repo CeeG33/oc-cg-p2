@@ -22,9 +22,13 @@ for info in infos:
 #extrait le titre du livre
 titre_livre = html_soup.find('li', class_='active').string
 
+#extrait la description du livre
+description_livre = html_soup.find_all('p')[3].string
 
 print(product_page_url)
 print()
 print(infos_livres)
 print()
 print(titre_livre)
+print()
+print(description_livre)
