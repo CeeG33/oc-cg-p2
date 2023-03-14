@@ -90,3 +90,5 @@ with open('blackMariaData.csv', 'w') as fichier_csv:
       writer = csv.writer(fichier_csv, delimiter=',')
       writer.writerow(en_tete)
       writer.writerows(liste_data)
+
+#Fin Phase 1
