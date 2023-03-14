@@ -30,26 +30,47 @@ titre_livre2 = li_elements[3]
 description_livre = html_soup.find_all('p')[3].string
 
 #notation du livre
-note1 = html_soup.find('p', class_="star-rating One")
+div_livre = html_soup.find('div', class_='col-sm-6 product_main')
+notation1 = div_livre.find('p', class_='star-rating One')
+notation2 = div_livre.find('p', class_='star-rating Two')
+notation3 = div_livre.find('p', class_='star-rating Three')
+notation4 = div_livre.find('p', class_='star-rating Four')
+notation5 = div_livre.find('p', class_='star-rating Five')
+
+if notation1:
+      note_livre = '1/5'
+elif notation2:
+      note_livre = '2/5'
+elif notation3:
+      note_livre = '3/5'
+elif notation4:
+      note_livre = '4/5'
+elif notation5:
+      note_livre = '5/5'
+
+            
+
+"""
+note1 = html_soup.find('p', class_='star-rating One')
 if note1: 
         print('1/5')
 
-note2 = html_soup.find('p', class_="star-rating Two")
+note2 = html_soup.find('p', class_='star-rating Two')
 if note2: 
         print('2/5')
 
-note3 = html_soup.find('p', class_="star-rating Three")
+note3 = html_soup.find('p', class_='star-rating Three')
 if note3: 
         print('3/5')
 
-note4 = html_soup.find('p', class_="star-rating Four")
+note4 = html_soup.find('p', class_='star-rating Four')
 if note4: 
         print('4/5')
 
-note5 = html_soup.find('p', class_="star-rating Five")
+note5 = html_soup.find('p', class_='star-rating Five')
 if note5: 
         print('5/5')
-
+"""
 #print(product_page_url)
 print()
 #print(infos_livres)
@@ -58,3 +79,4 @@ print()
 print()
 #print(description_livre)
 #print(cat_livre.text)
+print(note_livre)
