@@ -1,3 +1,4 @@
 env/
 .idea/
 desktop.ini
+*.csv
