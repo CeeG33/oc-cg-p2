@@ -3,6 +3,8 @@ import requests
 from bs4 import BeautifulSoup
 import csv
 
+# Début Phase 1
+
 # Définition de l'url
 product_page_url = "http://books.toscrape.com/catalogue/the-black-maria_991/index.html"
 
@@ -91,4 +93,4 @@ with open('blackMariaData.csv', 'w') as fichier_csv:
       writer.writerow(en_tete)
       writer.writerows(liste_data)
 
-#Fin Phase 1
+# Fin Phase 1
