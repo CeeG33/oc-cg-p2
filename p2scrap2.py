@@ -48,7 +48,10 @@ for a in h3_a:
     href = a.get('href')
     hrefs.append('http://books.toscrape.com/catalogue/' + href.replace('../../../', ''))
 
-print(hrefs)
+presence_next = cat_cible_soup.find('li', class_='next')
+if presence_next:
+    url_cat_page2 = url_cat.replace('index', 'page-2')
+print(url_cat_page2)
 
 """
 list_categories = []
