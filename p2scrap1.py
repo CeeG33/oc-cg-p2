@@ -5,18 +5,23 @@ import csv
 
 # Début Phase 1
 
-# Définition de l'url
+# Définition de l'URL
 product_page_url = "http://books.toscrape.com/catalogue/the-black-maria_991/index.html"
 
-# Appel de l'url
-product_page_html = requests.get(product_page_url)
+# Fonction pour faire appel à une URL
+def reqHtml(product_page_url):
+      html = requests.get(product_page_url)
+      return html
 
-# Parsage des données
-html_soup = BeautifulSoup(product_page_html.content, 'html.parser')
+product_page_html = reqHtml(product_page_url)
 
-# Trouve toutes les cellules du tableau contenant les principales informations concernant le livre (extract)
-infos = html_soup.find_all('td')
+# Fonction pour parser le code HTML
+def parseHtml(product_page_html):
+      soup = BeautifulSoup(product_page_html.content, 'html.parser')
+      return soup
 
+html_soup = parseHtml(product_page_html)
+      
 # Extrait l'UPC, les prix et la disponibilité
 tableau = html_soup.find('table', class_='table table-striped')
 tableau_td = tableau.find_all('td')
@@ -37,22 +42,19 @@ description_livre = html_soup.find_all('p')[3].string
 
 # Extrait la note du livre (extract)
 div_livre = html_soup.find('div', class_='col-sm-6 product_main')
-notation1 = div_livre.find('p', class_='star-rating One')
-notation2 = div_livre.find('p', class_='star-rating Two')
-notation3 = div_livre.find('p', class_='star-rating Three')
-notation4 = div_livre.find('p', class_='star-rating Four')
-notation5 = div_livre.find('p', class_='star-rating Five')
-
-if notation1:
-      note_livre = '1_5'
-elif notation2:
-      note_livre = '2_5'
-elif notation3:
-      note_livre = '3_5'
-elif notation4:
-      note_livre = '4_5'
-elif notation5:
-      note_livre = '5_5'
+p_notes = div_livre.find_all('p', class_='star-rating')
+note_livre = None
+for note in p_notes:
+      if 'One' in note['class']:
+            note_livre = '1_5'
+      elif 'Two' in note['class']:
+            note_livre = '2_5'
+      elif 'Three' in note['class']:
+            note_livre = '3_5'
+      elif 'Four' in note['class']:
+            note_livre = '4_5'
+      elif 'Five' in note['class']:
+            note_livre = '5_5'
 
 # Extrait l'URL de l'image de couverture (extract)
 div_img = html_soup.find('div', class_='item active')
