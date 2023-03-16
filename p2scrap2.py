@@ -60,11 +60,23 @@ liste_hrefs = extract_books_url(url_cat)
 presence_next = soup_url_cat.find('li', class_='next')
 
 if presence_next:
-    url_next = presence_next.find('a')
-    url_next_href = url_cat + url_next['href']
-    liste_hrefs.extend(extract_books_url(url_next_href))
+    
+    links_cat = []
+    
+    pagination = soup_url_cat.find('li', class_='current').string.strip()
+    
+    nb_page_cat = int(pagination[10])
+    
+    pages = 1
+   
+    for page in range(2, nb_page_cat + 1):
+        pages += 1
+        links_cat.append(url_cat + 'page-' + str(page) + '.html')
+    
+    for link in links_cat:
+        liste_hrefs.extend(extract_books_url(link))
 
-print(len(liste_hrefs))
+s1.donnees_livre('http://books.toscrape.com/catalogue/tsubasa-world-chronicle-2-tsubasa-world-chronicle-2_949/index.html')
 
 """
 # Création liste des catégories
@@ -73,4 +85,9 @@ for cat in nav_list_a:
     list_categories.append(cat.string.strip())
 
 print(list_categories)
+
+if presence_next:
+    url_next = presence_next.find('a')
+    url_next_href = url_cat + url_next['href']
+    liste_hrefs.extend(extract_books_url(url_next_href))
 """
