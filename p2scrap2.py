@@ -16,9 +16,9 @@ main_url_html = s1.reqHtml(main_url)
 html_soup = s1.parseHtml(main_url_html)
 
 # Définition de la catégorie à scraper
-category = 'Mystery'
+category = 'Sequential Art'
 
-# Fonction pour la rechercher l'URL de la catégorie
+# Fonction pour rechercher l'URL de la catégorie
 def url_cat_find(category):
     nav_list_ul = html_soup.find('ul', class_='nav nav-list')
     nav_list_a = nav_list_ul.find_all('a')
@@ -30,19 +30,17 @@ def url_cat_find(category):
             break
     base_url = 'http://books.toscrape.com/'
 
-    url_gen = base_url + find_cat['href']
+    url_gen = base_url + find_cat['href'].replace('index.html', '')
     return url_gen
 
 url_cat = url_cat_find(category)
-
-# Appel de l'URL de la catégorie souhaitée
-url_cat_cible = s1.reqHtml(url_cat)
-
-# Parsage des données de la catégorie souhaitée
-cat_cible_soup = s1.parseHtml(url_cat_cible)
+req_url_cat = s1.reqHtml(url_cat)
+soup_url_cat = s1.parseHtml(req_url_cat)
 
 # Extraction de l'URL de tous les livres de la page
-def extract_books_url(cat_cible_soup):
+def extract_books_url(url_cat):
+    url_cat_cible = s1.reqHtml(url_cat)
+    cat_cible_soup = s1.parseHtml(url_cat_cible)
     ol = cat_cible_soup.find('ol', class_='row')
     h3 = ol.find_all('h3')
     h3_a = []
@@ -55,17 +53,20 @@ def extract_books_url(cat_cible_soup):
         href = a.get('href')
         hrefs.append('http://books.toscrape.com/catalogue/' + href.replace('../../../', ''))
     return hrefs
-liste_hrefs = extract_books_url(cat_cible_soup)
 
-print(liste_hrefs)  
+liste_hrefs = extract_books_url(url_cat)
+
+# Détection de la pagination
+presence_next = soup_url_cat.find('li', class_='next')
+
+if presence_next:
+    url_next = presence_next.find('a')
+    url_next_href = url_cat + url_next['href']
+    liste_hrefs.extend(extract_books_url(url_next_href))
+
+print(len(liste_hrefs))
 
 """
-presence_next = cat_cible_soup.find('li', class_='next')
-if presence_next:
-    url_cat_page2 = url_cat.replace('index', 'page-2')
-
-
-
 # Création liste des catégories
 list_categories = []
 for cat in nav_list_a:
