@@ -1,4 +1,3 @@
-# Importation des packages requis
 import requests
 from bs4 import BeautifulSoup
 import csv
@@ -6,58 +5,51 @@ import os
 
 # Début Phase 1
 
-# Définition de l'URL
 product_page_url = "http://books.toscrape.com/catalogue/the-black-maria_991/index.html"
 
-nom_fichier_csv = 'bookData.csv'
-# Fonction pour faire appel à une URL
-def reqHtml(product_page_url):
-      html = requests.get(product_page_url)
-      return html
+def req_html(product_page_url):
+      return requests.get(product_page_url)
 
-# Fonction pour parser le code HTML
-def parseHtml(product_page_html):
-      soup = BeautifulSoup(product_page_html.content, 'html.parser')
-      return soup
+def parse_html(product_page_html):
+      return BeautifulSoup(product_page_html.content, 'html.parser')
 
-def donnees_livre(product_page_url):
+def book_data(product_page_url):
 
-      product_page_html = reqHtml(product_page_url)
-      html_soup = parseHtml(product_page_html)
+      product_page_html = req_html(product_page_url)
+      html_soup = parse_html(product_page_html)
             
-      # Extrait l'UPC, les prix et la disponibilité
-      tableau = html_soup.find('table', class_='table table-striped')
-      tableau_td = tableau.find_all('td')
-      upc = tableau_td[0].text
-      priceExclTax = tableau_td[2].text
-      priceInclTax = tableau_td[3].text
-      availability = tableau_td[5].text
+      # Extrait l'UPC, les prix et la disponibilité (extract)
+      table = html_soup.find('table', class_='table table-striped')
+      table_td = table.find_all('td')
+      upc = table_td[0].text
+      price_excl_tax = table_td[2].text
+      price_incl_tax = table_td[3].text
+      availability = table_td[5].text
 
       # Extrait le titre et la catégorie du livre (extract)
-      #titre_livre = html_soup.find('li', class_='active').string (variante)
       ul_elements = html_soup.find('ul', class_='breadcrumb')
       li_elements = ul_elements.find_all('li')
-      cat_livre = li_elements[2].text.strip()
-      titre_livre2 = li_elements[3].text.strip()
+      cat_book = li_elements[2].text.strip()
+      title_book = li_elements[3].text.strip()
 
       # Extrait la description du livre (extract)
-      description_livre = html_soup.find_all('p')[3].string
+      description_book = html_soup.find_all('p')[3].string
 
       # Extrait la note du livre (extract)
-      div_livre = html_soup.find('div', class_='col-sm-6 product_main')
-      p_notes = div_livre.find_all('p', class_='star-rating')
-      note_livre = None
-      for note in p_notes:
-            if 'One' in note['class']:
-                  note_livre = '1_5'
-            elif 'Two' in note['class']:
-                  note_livre = '2_5'
-            elif 'Three' in note['class']:
-                  note_livre = '3_5'
-            elif 'Four' in note['class']:
-                  note_livre = '4_5'
-            elif 'Five' in note['class']:
-                  note_livre = '5_5'
+      div_book = html_soup.find('div', class_='col-sm-6 product_main')
+      p_marks = div_book.find_all('p', class_='star-rating')
+      book_mark = None
+      for mark in p_marks:
+            if 'One' in mark['class']:
+                  book_mark = '1_5'
+            elif 'Two' in mark['class']:
+                  book_mark = '2_5'
+            elif 'Three' in mark['class']:
+                  book_mark = '3_5'
+            elif 'Four' in mark['class']:
+                  book_mark = '4_5'
+            elif 'Five' in mark['class']:
+                  book_mark = '5_5'
 
       # Extrait l'URL de l'image de couverture (extract)
       div_img = html_soup.find('div', class_='item active')
@@ -65,22 +57,20 @@ def donnees_livre(product_page_url):
       img_url = 'http://books.toscrape.com/' + src.replace('../../', '') 
 
       
-      # Liste de la data à charger
-      liste_data = [
+      data_list = [
             [product_page_url, 
             upc,
-            titre_livre2,
-            priceInclTax, 
-            priceExclTax, 
+            title_book,
+            price_incl_tax, 
+            price_excl_tax, 
             availability,
-            description_livre, 
-            cat_livre, 
-            note_livre, 
+            description_book, 
+            cat_book, 
+            book_mark, 
             img_url]
       ]
 
-      # Définition des en-têtes
-      en_tete = [
+      headers = [
             'product_page_url', 
             'universal_ product_code_(upc)', 
             'title', 
@@ -94,14 +84,13 @@ def donnees_livre(product_page_url):
       ]
 
       # Création du fichier CSV
-      nom_fichier_csv = 'bookData.csv'
-      with open(nom_fichier_csv, 'a', encoding="utf-8", newline='') as fichier_csv:
-            if os.stat(nom_fichier_csv).st_size == 0:
-                  writer = csv.writer(fichier_csv, delimiter=',')
-                  writer.writerow(en_tete)
-                  writer.writerows(liste_data)
+      csv_file_name = 'bookData.csv'
+      with open(csv_file_name, 'a', encoding="utf-8", newline='') as csv_file:
+            if os.stat(csv_file_name).st_size == 0:
+                  writer = csv.writer(csv_file, delimiter=',')
+                  writer.writerow(headers)
+                  writer.writerows(data_list)
             else:
-                  writer = csv.writer(fichier_csv, delimiter=',')
-                  writer.writerows(liste_data)
+                  writer = csv.writer(csv_file, delimiter=',')
+                  writer.writerows(data_list)
 
-# Fin Phase 1
