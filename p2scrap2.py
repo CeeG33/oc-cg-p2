@@ -71,11 +71,11 @@ if presence_next:
     for link in links_cat:
         hrefs_list.extend(extract_books_url(link))
 
-
+"""
 for link in hrefs_list:
     s1.book_data(link)
 
-"""
+
 # Création liste des catégories
 list_categories = []
 for cat in nav_list_a:
