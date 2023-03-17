@@ -6,17 +6,12 @@ import p2scrap1 as s1
 
 # Début Phase 2
 
-# Définition de l'url de la page principale
 main_url = "http://books.toscrape.com/index.html"
-
-# Appel de l'url de la page principale
-main_url_html = s1.reqHtml(main_url)
-
-# Parsage des données
-html_soup = s1.parseHtml(main_url_html)
+main_url_html = s1.req_html(main_url)
+html_soup = s1.parse_html(main_url_html)
 
 # Définition de la catégorie à scraper
-category = 'Sequential Art'
+category = 'Poetry'
 
 # Fonction pour rechercher l'URL de la catégorie
 def url_cat_find(category):
@@ -34,19 +29,19 @@ def url_cat_find(category):
     return url_gen
 
 url_cat = url_cat_find(category)
-req_url_cat = s1.reqHtml(url_cat)
-soup_url_cat = s1.parseHtml(req_url_cat)
+url_cat_req_first = s1.req_html(url_cat)
+url_cat_soup_first = s1.parse_html(url_cat_req_first)
 
 # Extraction de l'URL de tous les livres de la page
 def extract_books_url(url_cat):
-    url_cat_cible = s1.reqHtml(url_cat)
-    cat_cible_soup = s1.parseHtml(url_cat_cible)
-    ol = cat_cible_soup.find('ol', class_='row')
+    url_cat_req = s1.req_html(url_cat)
+    url_cat_soup = s1.parse_html(url_cat_req)
+    ol = url_cat_soup.find('ol', class_='row')
     h3 = ol.find_all('h3')
     h3_a = []
-    for lesA in h3:
-        liste_a = lesA.find('a')
-        h3_a.append(liste_a)
+    for a in h3:
+        list_a = a.find('a')
+        h3_a.append(list_a)
 
     hrefs = []
     for a in h3_a:
@@ -54,16 +49,16 @@ def extract_books_url(url_cat):
         hrefs.append('http://books.toscrape.com/catalogue/' + href.replace('../../../', ''))
     return hrefs
 
-liste_hrefs = extract_books_url(url_cat)
+hrefs_list = extract_books_url(url_cat)
 
 # Détection de la pagination
-presence_next = soup_url_cat.find('li', class_='next')
+presence_next = url_cat_soup_first.find('li', class_='next')
 
 if presence_next:
     
     links_cat = []
     
-    pagination = soup_url_cat.find('li', class_='current').string.strip()
+    pagination = url_cat_soup_first.find('li', class_='current').string.strip()
     
     nb_page_cat = int(pagination[10])
     
@@ -74,11 +69,12 @@ if presence_next:
         links_cat.append(url_cat + 'page-' + str(page) + '.html')
     
     for link in links_cat:
-        liste_hrefs.extend(extract_books_url(link))
+        hrefs_list.extend(extract_books_url(link))
 
 
-for link in liste_hrefs:
-    s1.donnees_livre(link)
+for link in hrefs_list:
+    s1.book_data(link)
+
 """
 # Création liste des catégories
 list_categories = []
@@ -87,8 +83,4 @@ for cat in nav_list_a:
 
 print(list_categories)
 
-if presence_next:
-    url_next = presence_next.find('a')
-    url_next_href = url_cat + url_next['href']
-    liste_hrefs.extend(extract_books_url(url_next_href))
 """
