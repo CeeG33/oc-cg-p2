@@ -95,7 +95,7 @@ def donnees_livre(product_page_url):
 
       # Création du fichier CSV
       nom_fichier_csv = 'bookData.csv'
-      with open(nom_fichier_csv, 'a') as fichier_csv:
+      with open(nom_fichier_csv, 'a', encoding="utf-8", newline='') as fichier_csv:
             if os.stat(nom_fichier_csv).st_size == 0:
                   writer = csv.writer(fichier_csv, delimiter=',')
                   writer.writerow(en_tete)
@@ -104,5 +104,4 @@ def donnees_livre(product_page_url):
                   writer = csv.writer(fichier_csv, delimiter=',')
                   writer.writerows(liste_data)
 
-donnees_livre(product_page_url)
 # Fin Phase 1
