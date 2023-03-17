@@ -76,8 +76,9 @@ if presence_next:
     for link in links_cat:
         liste_hrefs.extend(extract_books_url(link))
 
-s1.donnees_livre('http://books.toscrape.com/catalogue/tsubasa-world-chronicle-2-tsubasa-world-chronicle-2_949/index.html')
 
+for link in liste_hrefs:
+    s1.donnees_livre(link)
 """
 # Création liste des catégories
 list_categories = []
