@@ -3,3 +3,4 @@ env/
 desktop.ini
 *.csv
 __pycache__/
+books_img/
