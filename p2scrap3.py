@@ -24,10 +24,15 @@ for cats in category:
 all_books_url = []
 
 for url in urls_categories:
-    all_books_url.extend(s2.books_n_pages(url))
+   books_category = []
+   books_category.extend(s2.books_n_pages(url))
    
+   for cat in books_category:
+       s1.book_data(cat)
+   
+"""
 for link in all_books_url:
     s1.book_data(link)
-
+"""
 
 
