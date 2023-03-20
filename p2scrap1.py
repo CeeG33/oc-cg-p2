@@ -84,7 +84,8 @@ def book_data(product_page_url):
       ]
 
       # Création du fichier CSV
-      csv_file_name = 'bookData.csv'
+      csv_file_name = 'books' + cat_book.replace(' ', '') + '.csv'
+      
       with open(csv_file_name, 'a', encoding="utf-8", newline='') as csv_file:
             if os.stat(csv_file_name).st_size == 0:
                   writer = csv.writer(csv_file, delimiter=',')
@@ -93,4 +94,5 @@ def book_data(product_page_url):
             else:
                   writer = csv.writer(csv_file, delimiter=',')
                   writer.writerows(data_list)
-
+      
+      
