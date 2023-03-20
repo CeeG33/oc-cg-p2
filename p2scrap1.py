@@ -3,9 +3,7 @@ from bs4 import BeautifulSoup
 import csv
 import os
 
-# Début Phase 1
-
-product_page_url = "http://books.toscrape.com/catalogue/the-faith-of-christopher-hitchens-the-restless-soul-of-the-worlds-most-notorious-atheist_495/index.html"
+product_page_url = 'http://books.toscrape.com/catalogue/the-faith-of-christopher-hitchens-the-restless-soul-of-the-worlds-most-notorious-atheist_495/index.html'
 
 def req_html(product_page_url):
       return requests.get(product_page_url)
@@ -51,7 +49,7 @@ def book_data(product_page_url):
             elif 'Five' in mark['class']:
                   book_mark = '5_5'
 
-      # Extrait l'URL de l'image de couverture (extract) et la télécharge
+      # Extrait l'URL de l'image de couverture (extract), la télécharge puis la stocke dans un dossier selon l'UPC du livre
       div_img = html_soup.find('div', class_='item active')
       src = div_img.find('img')['src']
       img_url = 'http://books.toscrape.com/' + src.replace('../../', '') 
@@ -89,8 +87,6 @@ def book_data(product_page_url):
             'image_url'
       ]
 
-book_data(product_page_url)
-"""
       csv_file_name = 'books' + cat_book.replace(' ', '') + '.csv'
       
       with open(csv_file_name, 'a', encoding="utf-8", newline='') as csv_file:
@@ -101,5 +97,3 @@ book_data(product_page_url)
             else:
                   writer = csv.writer(csv_file, delimiter=',')
                   writer.writerows(data_list)
-
-"""

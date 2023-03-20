@@ -1,10 +1,6 @@
-import requests
-from bs4 import BeautifulSoup
-import csv
 import p2scrap1 as s1
 import p2scrap2 as s2
 
-# Début Phase 3
 main_url = "http://books.toscrape.com/index.html"
 main_url_html = s1.req_html(main_url)
 html_soup = s1.parse_html(main_url_html)
@@ -26,13 +22,9 @@ all_books_url = []
 for url in urls_categories:
    books_category = []
    books_category.extend(s2.books_n_pages(url))
-   
+
    for cat in books_category:
        s1.book_data(cat)
-   
-"""
-for link in all_books_url:
-    s1.book_data(link)
-"""
+
 
 

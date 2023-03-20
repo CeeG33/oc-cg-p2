@@ -1,15 +1,9 @@
-import requests
-from bs4 import BeautifulSoup
-import csv
 import p2scrap1 as s1
-
-# Début Phase 2
 
 main_url = "http://books.toscrape.com/index.html"
 main_url_html = s1.req_html(main_url)
 html_soup = s1.parse_html(main_url_html)
 
-# Définition de la catégorie à scraper
 category = 'Mystery'
 
 def url_cat_find(category):
@@ -73,8 +67,3 @@ def books_n_pages(url_cat):
     cat_books_urls = extract_books_url(url_cat) 
     cat_books_urls.extend(next_button(url_cat))
     return cat_books_urls
-
-"""
-for link in cat_books_urls:
-    s1.book_data(link)
-"""
