@@ -5,6 +5,14 @@ Date : Mars 2023
 
 Après avoir téléchargé le contenu du repository, veuillez l'extraire dans un dossier spécifique sur votre ordinateur. Ensuite, suivez ces étapes dans l'ordre afin de faire fonctionner le code et pouvoir extraire les données du site Books to Scrape (http://books.toscrape.com/index.html) :
 
+python==3.11.2
+beautifulsoup4==4.11.2
+certifi==2022.12.7
+charset-normalizer==3.1.0
+idna==3.4
+requests==2.28.2
+soupsieve==2.4
+
 ## 1 - Installation des logiciels requis
 
 ### 1.1 - Python
